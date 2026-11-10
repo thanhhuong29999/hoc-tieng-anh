@@ -1,0 +1,18 @@
+name = "hoc-tieng-anh-ai"
+main = "worker.js"
+compatibility_date = "2025-09-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://thanhhuong29999.github.io"
+AI_MODEL = "gpt-4o-mini"
+GOOGLE_CLIENT_ID = ""
+# AI_BASE_URL = "https://api.openai.com/v1"
+# ALLOWED_EMAILS = "a@gmail.com,b@gmail.com"
+# DAILY_LIMIT = "80"
+
+# Giới hạn lượt dùng mỗi ngày (tuỳ chọn): tạo một KV namespace rồi bỏ dấu # 3 dòng dưới
+# [[kv_namespaces]]
+# binding = "USAGE"
+# id = "<id của KV namespace>"
+
+# Khoá API đặt bằng lệnh (không ghi vào file này):  npx wrangler secret put AI_API_KEY

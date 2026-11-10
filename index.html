@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kế Toán Nói Tiếng Anh</title>
+<meta name="description" content="Học tiếng Anh cho kế toán xuất nhập khẩu mất gốc: 90 ngày từ vựng, kiểm tra và tập nói với AI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lexend:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Kế toán xuất nhập khẩu</span>
+    <h1>Kế Toán Nói Tiếng Anh</h1>
+    <p class="muted">Lộ trình 3 tháng, mỗi ngày 15 từ: từ giao tiếp công sở, kế toán, đến xuất nhập khẩu. Học thẻ, ôn đúng lúc sắp quên, tự kiểm tra, rồi tập nói với sếp và đối tác do AI đóng vai.</p>
+  </header>
+
+  <div class="sync" id="sync" hidden aria-live="polite">
+    <span class="dot" aria-hidden="true"></span>
+    <span id="sync-text"></span>
+    <button class="btn small primary" id="sync-btn" type="button"></button>
+    <button class="linkbtn" id="sync-out" type="button" hidden>Đăng xuất</button>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-cau" data-view="cau" aria-selected="true">Câu cứu cánh</button>
+    <button class="tab" role="tab" id="tab-tu" data-view="tu" aria-selected="false">Từ vựng</button>
+    <button class="tab" role="tab" id="tab-kt" data-view="kt" aria-selected="false">Kiểm tra</button>
+    <button class="tab" role="tab" id="tab-noi" data-view="noi" aria-selected="false">Tập nói</button>
+  </nav>
+
+  <section id="view-cau">
+    <div class="tip">Sếp và đối tác người Trung Quốc thường nói tiếng Anh đơn giản và có giọng riêng. Không hiểu là chuyện bình thường. Chỉ cần dùng đúng câu dưới đây là cuộc nói chuyện vẫn tiếp tục được. Bấm nút loa để nghe đọc chậm.</div>
+    <div class="group" id="g-khong-hieu"><h2>Khi không nghe kịp</h2></div>
+    <div class="group" id="g-cong-viec"><h2>Câu hay dùng trong công việc kế toán</h2></div>
+  </section>
+
+  <section id="view-tu" hidden>
+    <div id="pick-day" class="stack">
+      <div class="today" id="today"></div>
+      <div class="stats">
+        <span class="chip" id="st-thuoc">Đã thuộc: 0</span>
+        <span class="chip" id="st-ngay">Hoàn thành: 0/90 ngày</span>
+      </div>
+      <div class="row">
+        <button class="btn" id="b-due" hidden>Ôn từ đến hạn</button>
+        <button class="btn warn" id="b-weak" hidden>Luyện từ hay sai</button>
+        <button class="btn" id="b-review">Ôn lại tất cả từ đã học</button>
+      </div>
+      <div id="days" class="stack"></div>
+    </div>
+    <div id="study" class="stack" hidden>
+      <div class="studyhead">
+        <button class="btn small" id="b-back">← Lộ trình</button>
+        <span class="chip" id="deck-prog"></span>
+      </div>
+      <h2 id="deck-title"></h2>
+      <div id="deck-done" class="tip" hidden>Bạn đã thuộc hết 15 từ của ngày này. Làm bài kiểm tra để chắc chắn, hoặc quay lại lộ trình học ngày tiếp theo.
+        <div class="row" style="margin-top:10px"><button class="btn primary" id="b-quizday">Kiểm tra ngày này</button><button class="btn" id="b-back2">Về lộ trình</button></div>
+      </div>
+      <div class="card" id="card" tabindex="0" role="button" aria-label="Lật thẻ"></div>
+      <div class="row">
+        <button class="btn warn" id="b-chua">Chưa nhớ</button>
+        <button class="btn primary" id="b-nho">Nhớ rồi</button>
+      </div>
+      <p class="muted" style="font-size:.9rem">Từ chưa nhớ sẽ quay lại sớm hơn. Từ đã nhớ sẽ được nhắc ôn sau 1, 3, 7 rồi 16 ngày.</p>
+    </div>
+  </section>
+
+  <section id="view-kt" hidden>
+    <div id="q-empty" class="tip" hidden>Bạn chưa học từ nào. Hãy học ít nhất một ngày ở tab Từ vựng rồi quay lại đây để kiểm tra.
+      <div style="margin-top:10px"><button class="btn primary" id="q-gotu">Đi học từ vựng</button></div></div>
+    <div id="q-setup" class="stack">
+      <h2>Kiểm tra từ đã học</h2>
+      <p class="muted">10 câu. Độ khó tự tăng theo mức nhớ của từng từ: từ mới thì chọn đáp án, từ đã thuộc thì phải tự gõ lại hoặc nghe rồi gõ. Từ sai sẽ được đưa về "chưa thuộc" để ôn lại.</p>
+      <label for="q-scope" class="lbl">Kiểm tra phần nào?</label>
+      <select id="q-scope"></select>
+      <button class="btn primary" id="q-start">Bắt đầu kiểm tra</button>
+      <p class="muted" id="q-last"></p>
+      <p class="muted" id="q-msg"></p>
+    </div>
+    <div id="q-run" class="stack" hidden>
+      <div class="studyhead"><span class="chip" id="q-prog"></span></div>
+      <div class="bar wide"><span id="q-bar"></span></div>
+      <div id="q-box" class="stack"></div>
+      <button class="btn primary" id="q-next" hidden>Câu tiếp theo</button>
+    </div>
+    <div id="q-end" class="stack" hidden>
+      <div class="scorebox"><span class="eyebrow">Kết quả</span><div class="score" id="q-score"></div><p id="q-verdict"></p></div>
+      <div id="q-wrong" class="group"></div>
+      <button class="btn primary" id="q-again">Kiểm tra lần nữa</button>
+    </div>
+  </section>
+
+  <section id="view-noi" hidden>
+    <div class="group">
+      <h2>Chọn tình huống</h2>
+      <div class="scen" id="scen"></div>
+    </div>
+    <div id="ai-off" class="notice" hidden>Phần tập nói chưa được bật cho app này (chưa cấu hình máy chủ AI).</div>
+    <div class="chat" id="chat" aria-live="polite"><p class="muted">Chọn một tình huống ở trên để bắt đầu. AI sẽ nói trước, bạn trả lời bằng tiếng Anh. Không biết nói sao thì cứ gõ tiếng Việt, AI sẽ chỉ cách nói.</p></div>
+    <div class="hints" id="hints"></div>
+    <div class="compose">
+      <textarea id="input" placeholder="Gõ câu trả lời (tiếng Anh, hoặc tiếng Việt nếu bí)…" disabled></textarea>
+      <button class="btn primary" id="send" disabled>Gửi</button>
+    </div>
+    <button class="btn" id="restart" hidden>Làm lại tình huống này</button>
+  </section>
+</div>
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="sync.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
